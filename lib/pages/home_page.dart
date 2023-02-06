@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:survey/pages/employee_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -8,6 +9,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  void nextPage(BuildContext ctx) {
+    Navigator.of(ctx).push(MaterialPageRoute(builder: (_) {
+      return EmployeePage();
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -17,6 +24,10 @@ class _HomePageState extends State<HomePage> {
       /*appBar: AppBar(
         title: Text("Survey App for senelec"),
       ),*/
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.language),
+        onPressed: (){},
+      ),
       body: PageView.builder(itemBuilder: (_, index) {
         return Container(
           width: screenWidth * 0.8,
@@ -71,7 +82,9 @@ class _HomePageState extends State<HomePage> {
                     foregroundColor:
                         MaterialStateProperty.all<Color>(Colors.white),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    return nextPage(context);
+                  },
                   child: Text(
                     'Commencer',
                     style: TextStyle(
