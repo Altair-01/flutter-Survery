@@ -24,7 +24,7 @@ class _EmployeePageState extends State<EmployeePage> {
         title: Center(child: Text("Choisissez l'agent ")),
       ),
       body: GridView.builder(
-          padding: EdgeInsets.only(top: 20),
+          padding: EdgeInsets.only(top: 20, right: 10, left: 10, bottom: 10),
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 360,
             childAspectRatio: 1,
@@ -42,13 +42,26 @@ class _EmployeePageState extends State<EmployeePage> {
               child: Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.circular(15)),
-                child: Text(
-                  Agentdata[index].name,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(width: 5, color: Colors.black87)
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.35,
+                      child: Image.asset('images/profile.jpg'),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      Agentdata[index].name,
+                      style: TextStyle(color: Colors.black87, fontSize: 24),
+                    ),
+                  ],
                 ),
               ),
+
             );
           }),
     );
