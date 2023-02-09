@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:survey/pages/employee_page.dart';
+import 'package:survey/pages/choice_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   void nextPage(BuildContext ctx) {
     Navigator.of(ctx).push(MaterialPageRoute(builder: (_) {
-      return EmployeePage();
+      return ChoicePage();
     }));
   }
 
@@ -54,14 +54,6 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.green,
                         width: 5.0,
                         style: BorderStyle.solid),
-                    /*       boxShadow: [
-                           BoxShadow(
-                              color: Colors.black87,
-                              offset:  Offset(20.0, 10.0),
-                              blurRadius: 10.0,
-                              spreadRadius: 10.0
-                          )
-                        ],*/
                     color: Colors.black87,
                     shape: BoxShape.circle,
                     image: DecorationImage(

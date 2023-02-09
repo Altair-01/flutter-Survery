@@ -114,10 +114,6 @@ class _SurveyPageState extends State<SurveyPage> {
                         });
                       }
 
-                      setState(() {
-                        i = i + 1;
-                        value = value + 0.25;
-                      });
                     },
                     child: Container(
                       alignment: Alignment.center,
