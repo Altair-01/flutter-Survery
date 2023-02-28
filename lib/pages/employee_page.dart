@@ -1,6 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:survey/pages/survey_page.dart';
-import 'package:survey/model/agent_model.dart';
+import 'package:survey/model/agent.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
+
+Future<Agent> fetchAgent() async {
+  final response = await http
+      .get(Uri.parse('http://10.0.2.2:8080/api/agent/id/1'));
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+      return Agent.fromJson(jsonDecode(response.body));
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load question');
+  }
+}
 
 class EmployeePage extends StatefulWidget {
   const EmployeePage({Key? key}) : super(key: key);
@@ -10,10 +28,12 @@ class EmployeePage extends StatefulWidget {
 }
 
 class _EmployeePageState extends State<EmployeePage> {
-  //Liste de 100 agent généré pour l'exemple
-  final List<AgentModel> Agentdata =
-      List.generate(10, (index) => AgentModel("Agent $index")).toList();
-
+  late Future<Agent> futureAgent;
+  @override
+  void initState() {
+    super.initState();
+    futureAgent = fetchAgent();
+  }
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -31,12 +51,12 @@ class _EmployeePageState extends State<EmployeePage> {
             crossAxisSpacing: 20,
             mainAxisSpacing: 20,
           ),
-          itemCount: Agentdata.length,
+          itemCount: 4,//Agentdata.length,
           itemBuilder: (BuildContext ctx,index) {
             return InkWell(
               onTap: () {
                  Navigator.of(ctx).push(MaterialPageRoute(builder: (_) {
-                  return SurveyPage(agentModel: Agentdata[index]);
+                  return SurveyPage();//agent: Agentdata[index]);
                 }));
               },
               child: Container(
@@ -54,10 +74,23 @@ class _EmployeePageState extends State<EmployeePage> {
                       child: Image.asset('images/profile.jpg'),
                     ),
                     SizedBox(height: 10),
-                    Text(
-                      Agentdata[index].name,
+                   /* Text(
+                      Agentdata[index].fullName,
                       style: TextStyle(color: Colors.black87, fontSize: 24),
-                    ),
+                    ),*/
+                     FutureBuilder<Agent>(
+            future: futureAgent,
+            builder: (context, snapshot){
+              if(snapshot.hasData){
+                return Text(snapshot.data!.fullName);
+              }else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+
+              // By default, show a loading spinner.
+              return const CircularProgressIndicator();
+            },
+            ),
                   ],
                 ),
               ),

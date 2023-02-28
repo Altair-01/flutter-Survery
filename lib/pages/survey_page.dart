@@ -1,136 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:survey/model/agent_model.dart';
+import 'package:survey/model/agent.dart';
+import 'package:survey/model/question.dart';
 import 'package:survey/pages/thankyou_page.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
+
+Future<Question> fetchQuestion() async {
+  final response = await http
+      .get(Uri.parse('http://10.0.2.2:8080/api/ask/id/1'));
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    return Question.fromJson(jsonDecode(response.body));
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load question');
+  }
+}
+
 
 class SurveyPage extends StatefulWidget {
-  final AgentModel agentModel;
-  const SurveyPage({Key? key, required this.agentModel}) : super(key: key);
+  const SurveyPage({Key? key}) : super(key: key);
 
   @override
   _SurveyPageState createState() => _SurveyPageState();
 }
 
+
+
+
+
 class _SurveyPageState extends State<SurveyPage> {
+  late Future<Question> futureQuestion;
+  @override
+  void initState() {
+    super.initState();
+    futureQuestion = fetchQuestion();
+  }
   double value = 0.25;
   int i = 0;
   List emoji = ["😃", "😊", "🙁", "😡"];
-  List question = [
-    "Comment avez-vous trouvé l'accueil de l'agent",
-    "L'agent a-t-il répondu à vos attentes",
-    "Il y'a t-il eu des problèmes"
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Survey PAGE"),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Veuillez répondre aux questions en sélectionnant un des emoji",
-                style: TextStyle(
-                  fontSize: 28,
-                  color: Colors.indigo,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 50,
-          ),
-          Container(
-            height: 80,
-            width: 100,
-            decoration: BoxDecoration(
-              border:
-                  Border.all(width: 5, color: Colors.black87), //<-- SEE HERE
-            ),
-            child: Image.asset('images/profile.jpg'),
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          Text('${i + 1}' + '/' + question.length.toString()),
-          SizedBox(
-            height: 10,
-          ),
+      body:Center(
+        child: FutureBuilder<Question>(
+          future: futureQuestion,
+          builder: (context, snapshot){
+            if(snapshot.hasData){
+              return Text(snapshot.data!.text);
+            }else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
 
-          Text(
-            "Question ${i + 1}: ${question[i]}?",
-            style: TextStyle(
-              fontSize: 22,
-              color: Colors.indigo,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(right: 100, left: 100, top: 20),
-            alignment: Alignment.center,
-            child: LinearProgressIndicator(
-              backgroundColor: Colors.grey,
-              color: Colors.green,
-              minHeight: 5,
-              value: value,
-            ),
-          ),
-          SizedBox(
-            height: 50,
-          ),
-          Expanded(
-            child: GridView.builder(
-                padding: const EdgeInsets.all(40),
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20,
-                ),
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      print(emoji[index]);
-
-                      if (i == question.length - 1 ) {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                          return Thank();
-                        }));
-                      } else {
-                        setState(() {
-                          i = (i + 1) % question.length;  // This line has been added
-                          value = value + 0.25;
-                        });
-                      }
-
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.blueAccent,
-                      ),
-                      child: Text(
-                        emoji[index],
-                        style: TextStyle(color: Colors.white, fontSize: 100),
-                      ),
-                    ),
-                  );
-                }),
-          ),
-        ],
-      ),
+            // By default, show a loading spinner.
+            return const CircularProgressIndicator();
+          },
+        ),
+      )
     );
   }
 }
