@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:survey/pages/employee_page.dart';
+import 'package:survey/pages/survey_page.dart';
+
 import 'dart:ui';
+
 class ChoicePage extends StatefulWidget {
   const ChoicePage({Key? key}) : super(key: key);
 
@@ -9,7 +12,6 @@ class ChoicePage extends StatefulWidget {
 }
 
 class _ChoicePageState extends State<ChoicePage> {
-
   void nextPage(BuildContext ctx) {
     Navigator.of(ctx).push(MaterialPageRoute(builder: (_) {
       return EmployeePage();
@@ -35,66 +37,66 @@ class _ChoicePageState extends State<ChoicePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.only(right: paddingValue*0.2),
+                padding: EdgeInsets.only(right: paddingValue * 0.2),
                 child: Container(
-                  child:  Container(
+                  child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                        color: fontCardColor,
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(width: 5, color: Colors.black87),
+                      color: fontCardColor,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(width: 5, color: Colors.black87),
                       boxShadow: [
                         BoxShadow(
                             color: Colors.black12,
                             offset: Offset(0, 10),
                             blurRadius: 10,
-                            spreadRadius: 30
-
-                        ),
+                            spreadRadius: 30),
                       ],
                     ),
                     child: Column(
                       children: [
                         Container(
-
-                          width: paddingValue * 0.82,
-                          height: paddingValue,
-                          child: Image.asset("images/office.png")
-                        ),
+                            width: paddingValue * 0.82,
+                            height: paddingValue,
+                            child: Image.asset("images/office.png")),
                         SizedBox(height: 10),
                         TextButton(
                           style: ButtonStyle(
                             backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
-
+                                MaterialStateProperty.all<Color>(Colors.white),
                           ),
-                          onPressed: (){
-                            return nextPage(context);
+                          onPressed: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (_) {
+                           return EmployeePage(); //  return SurveyPage();
+                            }));
                           },
                           child: Text(
                             "Office Survey",
-                            style: TextStyle(color: fontCardColor, fontSize: 36, fontWeight: FontWeight.bold),
-                          ),)
+                            style: TextStyle(
+                                color: fontCardColor,
+                                fontSize: 36,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )
                       ],
                     ),
                   ),
                 ),
               ),
               Container(
-                child:  Container(
+                child: Container(
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: fontCardColor,
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(width: 5, color: Colors.black87),
+                    color: fontCardColor,
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(width: 5, color: Colors.black87),
                     boxShadow: [
                       BoxShadow(
                           color: Colors.black12,
                           offset: Offset(0, 10),
                           blurRadius: 10,
-                          spreadRadius: 30
-
-                      ),
+                          spreadRadius: 30),
                     ],
                   ),
                   child: Column(
@@ -102,23 +104,24 @@ class _ChoicePageState extends State<ChoicePage> {
                       Container(
                           width: paddingValue * 0.82,
                           height: paddingValue,
-                          child: Image.asset("images/agent.png")
-                      ),
+                          child: Image.asset("images/agent.png")),
                       SizedBox(height: 10),
                       TextButton(
                         style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-
-                      ),
-                        onPressed: (){
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                        ),
+                        onPressed: () {
                           return nextPage(context);
                         },
                         child: Text(
-                        "Agent Survey",
-                        style: TextStyle(color: fontCardColor, fontSize: 36, fontWeight: FontWeight.bold),
-                      ),)
-
+                          "Agent Survey",
+                          style: TextStyle(
+                              color: fontCardColor,
+                              fontSize: 36,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
                     ],
                   ),
                 ),
