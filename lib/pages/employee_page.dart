@@ -66,7 +66,7 @@ class _EmployeePageState extends State<EmployeePage> {
               crossAxisSpacing: 20,
               mainAxisSpacing: 20,
             ),
-            itemCount: 2,//Agentdata.length,
+            itemCount: _agents.length,//Agentdata.length,
             itemBuilder: (BuildContext ctx,index) {
               return InkWell(
                 onTap: () {
@@ -79,22 +79,20 @@ class _EmployeePageState extends State<EmployeePage> {
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15),
-                      border: Border.all(width: 5, color: Colors.black87)
+                      border: Border.all(width: 5, color: Colors.black87),
+                    image: DecorationImage(
+                     image: AssetImage('images/pro'+ _agents[index]['id'].toString() +'.jpg'),
+                      fit: BoxFit.cover
+                    )
                   ),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.25,
-                        child: Image.asset('images/profile.jpg'),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        _agents[index]['fullName'],
+                  child:Align(
+                    alignment: Alignment.bottomCenter,
+                    child:  Text(
+                      _agents[index]['fullName'],
+
                       //  Agent[index].fullName,
-                        style: TextStyle(color: Colors.black87, fontSize: 24),
-                      ),
-                    ],
+                      style: TextStyle(color: Colors.black87, fontSize: 32, fontWeight:FontWeight.w800),
+                    ),
                   ),
                 ),
 
