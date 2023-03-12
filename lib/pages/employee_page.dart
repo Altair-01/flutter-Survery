@@ -71,7 +71,7 @@ class _EmployeePageState extends State<EmployeePage> {
               return InkWell(
                 onTap: () {
                   Navigator.of(ctx).push(MaterialPageRoute(builder: (_) {
-                    return SurveyPage(agent: _agents[index]);//agent: Agentdata[index]);
+                    return SurveyPage(agent: _agents[index],  site: null);//agent: Agentdata[index]);
                   }));
                 },
                 child: Container(

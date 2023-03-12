@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:survey/model/agent.dart';
+import 'package:survey/model/site.dart';
 import 'package:survey/model/question.dart';
 import 'package:survey/pages/thankyou_page.dart';
 import 'package:http/http.dart' as http;
@@ -7,9 +8,11 @@ import 'dart:convert';
 import 'dart:async';
 
 class SurveyPage extends StatefulWidget {
-  final dynamic agent;
+  final dynamic? agent;
+  final dynamic? site;
 
-  const SurveyPage({Key? key, required this.agent}) : super(key: key);
+
+  const SurveyPage({Key? key,required this.site, required this.agent}) : super(key: key);
   @override
   _SurveyPageState createState() => _SurveyPageState();
 }
@@ -58,7 +61,7 @@ class _SurveyPageState extends State<SurveyPage> {
                         'Question: ' +
                             (_currentIndex < _questions.length
                                 ? _questions[_currentIndex]['id'].toString()
-                                : "") +
+                                : _questions.length.toString()) +
                             '/' +
                             _questions.length.toString(),
                         style: TextStyle(
@@ -66,15 +69,25 @@ class _SurveyPageState extends State<SurveyPage> {
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 25),
+                      //QUESTION
                       Text(
                         _currentIndex < _questions.length
                             ? _questions[_currentIndex]['text']
-                            : "",
-                        style: TextStyle(
+                            : "Terminé !",
+                        style: TextStyle(color: Colors.blueAccent,
                             fontSize: 30, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
+                      SizedBox(height: 50),
+                      //REPONSE
+                      Text(
+                        "Réponses:",
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
                       SizedBox(height: 20),
+                      //CETTE ROW NE CONCERNE QUE L'AFFICHAGE DES REPONSES(EMOJI)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -95,7 +108,7 @@ class _SurveyPageState extends State<SurveyPage> {
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.blueAccent,
+                                    color: Colors.white,
                                   ),
                                   child: Text(
                                     emoji[i],
@@ -130,6 +143,7 @@ class _SurveyPageState extends State<SurveyPage> {
         Map<String, dynamic> data = {
           'content': jsonSelectedEmoji,
           'agent': widget.agent,
+          'site' : widget.site,
         };
         // Envoyer la requête POST
         http.post(Uri.parse('http://10.0.2.2:8080/api/answer/add'),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:survey/pages/employee_page.dart';
+import 'package:survey/model/site.dart';
 import 'package:survey/pages/survey_page.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
 import 'dart:ui';
 
 class ChoicePage extends StatefulWidget {
@@ -12,10 +15,35 @@ class ChoicePage extends StatefulWidget {
 }
 
 class _ChoicePageState extends State<ChoicePage> {
+  List _sites = [];
+  //late Future<Agent> futureAgent;
+  // late Agent agent; // declare the variable to store the data
+  @override
+  void initState() {
+    super.initState();
+    fetchSite();
+  }
   void nextPage(BuildContext ctx) {
     Navigator.of(ctx).push(MaterialPageRoute(builder: (_) {
       return EmployeePage();
     }));
+  }
+
+  Future<void> fetchSite() async {
+    final response = await http
+        .get(Uri.parse('http://10.0.2.2:8080/api/site/all'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      final dataSite = jsonDecode(response.body);
+      setState(() {
+        _sites = dataSite;
+      });    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load sites');
+    }
   }
 
   @override
@@ -68,7 +96,9 @@ class _ChoicePageState extends State<ChoicePage> {
                           onPressed: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(builder: (_) {
-                           return EmployeePage(); //  return SurveyPage();
+                           //return SurveyPage(siteId: site.id);
+                              return SurveyPage( agent:null,site: _sites[index]); //  return SurveyPage();
+
                             }));
                           },
                           child: Text(

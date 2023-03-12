@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
                 "Système de sondage",
                 style: TextStyle(
                     color: Colors.blue,
-                    fontSize: 32,
+                    fontSize: 48,
                     fontWeight: FontWeight.bold),
               ),
               SizedBox(
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                 height: screenHeight * 0.3,
                 decoration: BoxDecoration(
                     border: new Border.all(
-                        color: Colors.green,
+                        color: Colors.black87,
                         width: 5.0,
                         style: BorderStyle.solid),
                     color: Colors.black87,
