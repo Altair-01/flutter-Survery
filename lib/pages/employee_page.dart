@@ -49,6 +49,8 @@ class _EmployeePageState extends State<EmployeePage> {
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text("Choisissez l'agent ")),
+        backgroundColor: Color(0xFF2E4179),
+
       ),
       body: SafeArea(
         child: _agents.isEmpty
@@ -79,7 +81,8 @@ class _EmployeePageState extends State<EmployeePage> {
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15),
-                      border: Border.all(width: 5, color: Colors.black87),
+                      border: Border.all(width: 5, color: Color(0xFF96322E),
+                  ),
                     image: DecorationImage(
                      image: AssetImage('images/pro'+ _agents[index]['id'].toString() +'.jpg'),
                       fit: BoxFit.cover
@@ -87,11 +90,12 @@ class _EmployeePageState extends State<EmployeePage> {
                   ),
                   child:Align(
                     alignment: Alignment.bottomCenter,
+
                     child:  Text(
                       _agents[index]['fullName'],
 
                       //  Agent[index].fullName,
-                      style: TextStyle(color: Colors.black87, fontSize: 32, fontWeight:FontWeight.w800),
+                      style: TextStyle(color: Color(0xFF2E4179), fontSize: 24, fontWeight:FontWeight.w800),
                     ),
                   ),
                 ),

@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.language),
         onPressed: (){},
+        backgroundColor: Color(0xFF2E4179),
       ),
       body: PageView.builder(itemBuilder: (_, index) {
         return Container(
@@ -36,22 +37,24 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                "Système de sondage",
-                style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 48,
-                    fontWeight: FontWeight.bold),
-              ),
+             Center(
+               child: Text(
+                 "Système de sondage",
+                 style: TextStyle(
+                     color: Color(0xFF2E4179),
+                     fontSize: 36,
+                     fontWeight: FontWeight.bold),
+               ),
+             ),
               SizedBox(
                 height: 10,
               ),
               Container(
-                width: screenWidth * 0.3,
+                width: screenWidth * 0.4,
                 height: screenHeight * 0.3,
                 decoration: BoxDecoration(
                     border: new Border.all(
-                        color: Colors.black87,
+                        color: Colors.white,
                         width: 5.0,
                         style: BorderStyle.solid),
                     color: Colors.black87,
@@ -70,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                 child: TextButton(
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blue),
+                        MaterialStateProperty.all<Color>(Color(0xFF2E4179)),
                     foregroundColor:
                         MaterialStateProperty.all<Color>(Colors.white),
                   ),

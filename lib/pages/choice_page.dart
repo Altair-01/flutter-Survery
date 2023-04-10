@@ -16,6 +16,7 @@ class ChoicePage extends StatefulWidget {
 
 class _ChoicePageState extends State<ChoicePage> {
   List _sites = [];
+
   //late Future<Agent> futureAgent;
   // late Agent agent; // declare the variable to store the data
   @override
@@ -23,6 +24,7 @@ class _ChoicePageState extends State<ChoicePage> {
     super.initState();
     fetchSite();
   }
+
   void nextPage(BuildContext ctx) {
     Navigator.of(ctx).push(MaterialPageRoute(builder: (_) {
       return EmployeePage();
@@ -30,8 +32,8 @@ class _ChoicePageState extends State<ChoicePage> {
   }
 
   Future<void> fetchSite() async {
-    final response = await http
-        .get(Uri.parse('http://10.0.2.2:8080/api/site/all'));
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:8080/api/site/all'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -39,7 +41,8 @@ class _ChoicePageState extends State<ChoicePage> {
       final dataSite = jsonDecode(response.body);
       setState(() {
         _sites = dataSite;
-      });    } else {
+      });
+    } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
       throw Exception('Failed to load sites');
@@ -49,117 +52,133 @@ class _ChoicePageState extends State<ChoicePage> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double paddingValue = screenWidth * 0.5; // 10% of the screen width
-    final fontCardColor = Color(0xFF033D5F);
-    final backGroundColor = Color(0xFF012033);
+    double screenHeight = MediaQuery.of(context).size.height;
+    print(screenWidth);
+    final fontCardColor = Color(0xFF2E4179);
+    final backGroundColor = Colors.white;
 
     return Scaffold(
-      backgroundColor: backGroundColor,
-      appBar: AppBar(
-        title: Text("Choice Page"),
-      ),
-      body: PageView.builder(itemBuilder: (_, index) {
-        return Container(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(right: paddingValue * 0.2),
-                child: Container(
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: fontCardColor,
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(width: 5, color: Colors.black87),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black12,
-                            offset: Offset(0, 10),
-                            blurRadius: 10,
-                            spreadRadius: 30),
-                      ],
-                    ),
-                    child: Column(
+        backgroundColor: backGroundColor,
+        appBar: AppBar(
+          title: Text("Choice Page"),
+          backgroundColor: Color(0xFF2E4179),
+        ),
+        body: LayoutBuilder(builder: (context, constraints) {
+          if (constraints.maxWidth > 600) {
+            return Center(child:Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                            width: paddingValue * 0.82,
-                            height: paddingValue,
-                            child: Image.asset("images/office.png")),
-                        SizedBox(height: 10),
                         TextButton(
                           style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.white),
+                                MaterialStateProperty.all<Color>(fontCardColor),
+                            minimumSize: MaterialStateProperty.all<Size>(Size(350, 180)),
+
+                          ),
+                          onPressed: () {
+                            return nextPage(context);
+                          },
+                          child: Text(
+                            "Sondage sur Agent ",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 36,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                            height: constraints.maxHeight * 0.25,
+                            width: constraints.maxWidth * 0.15
+                        ), // add space between the buttons
+                        TextButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(fontCardColor),
+                            minimumSize: MaterialStateProperty.all<Size>(Size(350, 180)),
+
                           ),
                           onPressed: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(builder: (_) {
-                           //return SurveyPage(siteId: site.id);
-                              return SurveyPage( agent:null,site: _sites[index]); //  return SurveyPage();
-
+                              return SurveyPage(agent: null, site: _sites[0]);
                             }));
                           },
                           child: Text(
-                            "Office Survey",
+                            "Sondage sur la CDC",
                             style: TextStyle(
-                                color: fontCardColor,
-                                fontSize: 36,
-                                fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontSize: 36,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        )
+                        ),
                       ],
                     ),
-                  ),
+
                 ),
-              ),
-              Container(
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: fontCardColor,
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(width: 5, color: Colors.black87),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black12,
-                          offset: Offset(0, 10),
-                          blurRadius: 10,
-                          spreadRadius: 30),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                          width: paddingValue * 0.82,
-                          height: paddingValue,
-                          child: Image.asset("images/agent.png")),
-                      SizedBox(height: 10),
-                      TextButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white),
+              ],
+            ),);
+          } else {
+            return PageView.builder(itemBuilder: (_, index) {
+              return Container(
+                alignment: Alignment.center,
+
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(fontCardColor),
+                        minimumSize: MaterialStateProperty.all<Size>(Size(300, 120)),
+
+                      ),
+                      onPressed: () {
+                        return nextPage(context);
+                      },
+                      child: Text(
+                        "Agent Survey",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
                         ),
-                        onPressed: () {
-                          return nextPage(context);
-                        },
-                        child: Text(
-                          "Agent Survey",
-                          style: TextStyle(
-                              color: fontCardColor,
-                              fontSize: 36,
-                              fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.25),
+                    // add space between the buttons
+                    TextButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(fontCardColor),
+                        minimumSize: MaterialStateProperty.all<Size>(Size(300, 120)),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (_) {
+                          return SurveyPage(agent: null, site: _sites[index]);
+                        }));
+                      },
+                      child: Text(
+                        "Office Survey",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-        );
-      }),
-    );
+              );
+            });
+          }
+        }));
   }
 }

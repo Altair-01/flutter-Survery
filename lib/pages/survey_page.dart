@@ -11,7 +11,6 @@ class SurveyPage extends StatefulWidget {
   final dynamic? agent;
   final dynamic? site;
 
-
   const SurveyPage({Key? key,required this.site, required this.agent}) : super(key: key);
   @override
   _SurveyPageState createState() => _SurveyPageState();
@@ -22,6 +21,7 @@ class _SurveyPageState extends State<SurveyPage> {
   int _currentIndex = 0;
   List emoji = ["😃", "😊", "🙁", "😡"];
   List _selectedEmoji = [];
+
   @override
   void initState() {
     super.initState();
@@ -39,10 +39,13 @@ class _SurveyPageState extends State<SurveyPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     final ctx = context; // obtain the current BuildContext
     return Scaffold(
         appBar: AppBar(
           title: Text("Survey PAGE"),
+          backgroundColor: Color(0xFF2E4179),
+
         ),
         body: SafeArea(
             child: _questions.isEmpty
@@ -65,8 +68,21 @@ class _SurveyPageState extends State<SurveyPage> {
                             '/' +
                             _questions.length.toString(),
                         style: TextStyle(
+                            color: Color(0xFF2E4179),
                             fontSize: 25, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 25),
+                      // PROGRESS BAR
+                      Container(
+                        width: screenWidth*0.7,
+                        child:LinearProgressIndicator(
+                          value: (_currentIndex / _questions.length),
+                          minHeight: 10,
+                          backgroundColor: Colors.grey[300],
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                        ),
+
                       ),
                       SizedBox(height: 25),
                       //QUESTION
@@ -74,7 +90,7 @@ class _SurveyPageState extends State<SurveyPage> {
                         _currentIndex < _questions.length
                             ? _questions[_currentIndex]['text']
                             : "Terminé !",
-                        style: TextStyle(color: Colors.blueAccent,
+                        style: TextStyle(color: Color(0xFF96322E),
                             fontSize: 30, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
@@ -83,7 +99,9 @@ class _SurveyPageState extends State<SurveyPage> {
                       Text(
                         "Réponses:",
                         style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
+                            fontSize: 24,
+                            color: Color(0xFF2E4179),
+                            fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 20),
@@ -113,7 +131,7 @@ class _SurveyPageState extends State<SurveyPage> {
                                   child: Text(
                                     emoji[i],
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 100),
+                                        color: Colors.white, fontSize: 50),//100 comme fontsize
                                   ),
                                 ),
                               ),

@@ -23,7 +23,8 @@ class _ThankState extends State<Thank> {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.lightBlueAccent, Colors.blue],
+          colors: [Color(0xFF96322E)
+            , Color(0xFF2E4179)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -32,9 +33,10 @@ class _ThankState extends State<Thank> {
         child: Text(
           "MERCI BEAUCOUP !",
           style: TextStyle(
-            fontSize: 48,
+            fontSize: 36,
             color: Colors.white,
             fontWeight: FontWeight.bold,
+            decoration: TextDecoration.none,
           ),
         ),
       ),
